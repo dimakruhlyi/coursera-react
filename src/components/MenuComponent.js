@@ -2,9 +2,9 @@ import React from 'react';
 import { Card, CardImg, CardImgOverlay, CardTitle } from 'reactstrap';
 
 
-    function RenderMenuItem({dish, onClick}) {
+    function RenderMenuItem({dish}) {
         return(
-            <Card key={dish.id} onClick={() => onClick(dish.id)}>
+            <Card key={dish.id} >
             <CardImg width="100%" src={dish.image} alt={dish.name} />
             <CardImgOverlay>
                 <CardTitle><h4>{dish.name}</h4></CardTitle>
