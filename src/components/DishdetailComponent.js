@@ -25,8 +25,9 @@ class SubmitCommentForm extends Component {
     }
 
     handleSubmit(values) {
-        console.log("Current State is: ", JSON.stringify(values));
-        alert("Current State is: " + JSON.stringify(values));
+        // console.log("Current State is: ", JSON.stringify(values));
+        // alert("Current State is: " + JSON.stringify(values));
+        this.props.addComment(this.props.dishId,  values.rating, values.author, values.comment);
     }
 
     render() {
@@ -55,8 +56,8 @@ class SubmitCommentForm extends Component {
                                 <Label>Your Name</Label>
                             </Col>
                             <Col md="12">
-                                <Control.text model=".name" name="name" className="form-control"
-                                id="name"
+                                <Control.text model=".author" name="author" className="form-control"
+                                id="author"
                                 placeholder="Your Name"
                                 validators={{
                                     minLength: minLength(3),
@@ -64,7 +65,7 @@ class SubmitCommentForm extends Component {
                                 }}
                                 />
                                 <Errors className="text-danger"
-                                model=".name"
+                                model=".author"
                                 show="touched"
                                 messages={{
                                     minLength: 'Must be greater than 2 characters',
@@ -117,7 +118,7 @@ class SubmitCommentForm extends Component {
             );
     }
 
-    function RenderComments({comments}){
+    function RenderComments({comments, addComment, dishId}){
         if (comments != null){
             return(
                 <div className="col-12  m-1">
@@ -135,7 +136,8 @@ class SubmitCommentForm extends Component {
                             </li>
                             );
                         })}
-                     </ul>    
+                     </ul> 
+                     <SubmitCommentForm dishId={dishId} addComment={addComment} /> 
                 </div>
             );
         }
@@ -163,8 +165,8 @@ class SubmitCommentForm extends Component {
                     <RenderDish dish={props.dish} />
                 </div>
                 <div className="col-12 col-md-5 m-1">
-                    <RenderComments comments={props.comments} />
-                    <SubmitCommentForm />
+                    <RenderComments comments={props.comments} addComment={props.addComment}
+                        dishId={props.dish.id}/>
                 </div>
             </div>
             </div>
