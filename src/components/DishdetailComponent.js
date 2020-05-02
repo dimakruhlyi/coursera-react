@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form'
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
@@ -106,13 +107,19 @@ class SubmitCommentForm extends Component {
     function RenderDish({dish}) {
         if (dish != null)
             return(
-                <Card>
-                    <CardImg top src={baseUrl + dish.image} alt={dish.name} />
-                    <CardBody>
-                      <CardTitle><h3>{dish.name}</h3></CardTitle>
-                      <CardText>{dish.description}</CardText>
-                    </CardBody>
-                </Card>
+                <FadeTransform
+                    in
+                    transformProps={{
+                        exitTransform: 'scale(0.5) translateY(-50%)'
+                    }}>
+                    <Card>
+                        <CardImg top src={baseUrl + dish.image} alt={dish.name} />
+                        <CardBody>
+                        <CardTitle><h3>{dish.name}</h3></CardTitle>
+                        <CardText>{dish.description}</CardText>
+                        </CardBody>
+                    </Card>
+                </FadeTransform>
             );
         else
             return(
@@ -126,18 +133,22 @@ class SubmitCommentForm extends Component {
                 <div className="col-12  m-1">
                      <h4>Comments</h4>
                      <ul className = "list-unstyled">
-                        {comments.map((comment) =>{
-                            return (
-                                <li key = {comment.id}>
-                                <p> {comment.comment} </p>
-                                <p>-- {comment.author}, {new Intl.DateTimeFormat("en-GB", {
-                                                        year: "numeric",
-                                                        month: "long",
-                                                        day: "2-digit",
-                                                        }).format(new Date(comment.date))}</p>
-                            </li>
-                            );
-                        })}
+                        <Stagger in>
+                            {comments.map((comment) =>{
+                                return (
+                                    <Fade in>
+                                        <li key = {comment.id}>
+                                        <p> {comment.comment} </p>
+                                        <p>-- {comment.author}, {new Intl.DateTimeFormat("en-GB", {
+                                                                year: "numeric",
+                                                                month: "long",
+                                                                day: "2-digit",
+                                                                }).format(new Date(comment.date))}</p>
+                                        </li>
+                                    </Fade>
+                                );
+                            })}
+                        </Stagger>
                      </ul> 
                      <SubmitCommentForm dishId={dishId} postComment={postComment} /> 
                 </div>
